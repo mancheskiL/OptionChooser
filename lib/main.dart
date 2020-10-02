@@ -12,12 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Option Chooser',
-      home: MyList(),
-      // routes: {
-      //   '/': (context) => MyList(),
-      //   '/add-edit': (context) => MyEdit(),
-      //   '/records': (context) => MyRecords(),
-      // },
+      // home: MyList(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MyList(),
+        '/add-edit': (context) => MyEdit(),
+        '/records': (context) => MyRecords(),
+      },
     );
   }
 }
