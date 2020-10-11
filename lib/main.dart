@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MyList(),
-        '/add-edit': (context) => MyEdit(),
+        // '/add-edit': (context) => MyEdit(),
         '/records': (context) => MyRecords(),
       },
     );

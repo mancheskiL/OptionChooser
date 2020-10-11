@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:option_chooser/models/list.dart';
 
 class MyList extends StatelessWidget {
   @override
@@ -8,9 +9,14 @@ class MyList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Options Screen'),
         actions: [
+          // IconButton(
+          //   icon: Icon(Icons.add_circle),
+          //   onPressed: () => Navigator.pushNamed(context, '/add-edit'),
+          // ),
           IconButton(
+            // when pressed will add new entry
             icon: Icon(Icons.add_circle),
-            onPressed: () => Navigator.pushNamed(context, '/add-edit'),
+            onPressed: () => null,
           ),
           IconButton(
             icon: Icon(Icons.android),
