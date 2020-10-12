@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ListModel extends ChangeNotifier {
-  List<Item> list;
+  List<Item> list = [];
 
   void add(String title) {
     var newId = list.length;
@@ -12,12 +13,11 @@ class ListModel extends ChangeNotifier {
   }
 }
 
-// @immutable
 class Item {
   String title;
   int id;
   bool complete;
-  // Date finished;
+  var finishedDate;
 
   Item(String title, int id) {
     this.title = title;

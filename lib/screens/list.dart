@@ -5,6 +5,8 @@ import 'package:option_chooser/models/list.dart';
 class MyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var list = context.watch<ListModel>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Options Screen'),
@@ -16,7 +18,10 @@ class MyList extends StatelessWidget {
           IconButton(
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
-            onPressed: () => null,
+            onPressed: () {
+              var listAdd = context.read<ListModel>();
+              listAdd.add('test');
+            },
           ),
           IconButton(
             icon: Icon(Icons.android),
@@ -24,23 +29,16 @@ class MyList extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(padding: EdgeInsets.all(8), children: <Widget>[
-        Container(
-          height: 50,
-          color: Colors.amber[500],
-          child: Center(child: Text('Item 1')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[600],
-          child: Center(child: Text('Item 2')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[700],
-          child: Center(child: Text('Item 3')),
-        ),
-      ]),
+      body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: list.list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+                height: 50,
+                color: Colors.amber[50 * (index + 1)],
+                child:
+                    Center(child: Text('${list.list[index].title}${index}')));
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Random selection',
