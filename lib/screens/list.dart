@@ -5,8 +5,6 @@ import 'package:option_chooser/models/list.dart';
 class MyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var list = context.watch<ListModel>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Options Screen'),
@@ -29,16 +27,18 @@ class MyList extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: list.list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-                height: 50,
-                color: Colors.amber[50 * (index + 1)],
-                child:
-                    Center(child: Text('${list.list[index].title}${index}')));
-          }),
+      body: Consumer<ListModel>(
+          builder: (context, list, child) => ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: list.list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      height: 50,
+                      color: Colors.amber,
+                      child: Center(
+                          child: Text('${list.list[index].title}${index}')));
+                },
+              )),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Random selection',
