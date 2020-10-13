@@ -24,4 +24,9 @@ class Item {
     this.id = id;
     this.complete = false;
   }
+
+  void setFinished() {
+    // TODO: use intl package to save a date time object into finishedDate
+    complete = true;
+  }
 }

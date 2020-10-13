@@ -32,11 +32,7 @@ class MyList extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: list.list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      height: 50,
-                      color: Colors.amber,
-                      child: Center(
-                          child: Text('${list.list[index].title}${index}')));
+                  return _MyListItem('${list.list[index].title}${index}');
                 },
               )),
       floatingActionButton: FloatingActionButton(
@@ -45,5 +41,31 @@ class MyList extends StatelessWidget {
         child: Icon(Icons.add),
       ),
     );
+  }
+}
+
+class _MyListItem extends StatelessWidget {
+  final String title;
+
+  _MyListItem(this.title, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: LimitedBox(
+            maxHeight: 48,
+            child: Row(children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(color: Colors.amber),
+              ),
+              SizedBox(width: 24),
+              Expanded(
+                child: Text(title),
+              ),
+              SizedBox(width: 24),
+              FlatButton(onPressed: null, child: Icon(Icons.check_box))
+            ])));
   }
 }
