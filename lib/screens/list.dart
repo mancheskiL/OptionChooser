@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
+import 'package:option_chooser/screens/dialog.dart';
 
 class MyList extends StatelessWidget {
   @override
@@ -15,15 +16,19 @@ class MyList extends StatelessWidget {
             onPressed: () {
               // var listAdd = context.read<ListModel>();
               // listAdd.add('test');
-              return showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dialog(
-                      elevation: 6,
-                      backgroundColor: Colors.blue[100],
-                      child: Text('Testing Dialog'),
-                    );
-                  });
+              // return showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return Dialog(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(50),
+              //         ),
+              //         elevation: 6,
+              //         backgroundColor: Colors.blue[100],
+              //         child: Text('Testing Dialog'),
+              //       );
+              //     });
+              return DialogWithTextField();
             },
           ),
           IconButton(
