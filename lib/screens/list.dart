@@ -9,10 +9,6 @@ class MyList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Options Screen'),
         actions: [
-          // IconButton(
-          //   icon: Icon(Icons.add_circle),
-          //   onPressed: () => Navigator.pushNamed(context, '/add-edit'),
-          // ),
           IconButton(
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
