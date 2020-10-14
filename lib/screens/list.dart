@@ -13,8 +13,17 @@ class MyList extends StatelessWidget {
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
             onPressed: () {
-              var listAdd = context.read<ListModel>();
-              listAdd.add('test');
+              // var listAdd = context.read<ListModel>();
+              // listAdd.add('test');
+              return showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      elevation: 6,
+                      backgroundColor: Colors.blue[100],
+                      child: Text('Testing Dialog'),
+                    );
+                  });
             },
           ),
           IconButton(
