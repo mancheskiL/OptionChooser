@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class ListModel extends ChangeNotifier {

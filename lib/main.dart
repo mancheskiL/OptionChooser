@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Option Chooser',
-      // home: MyList(),
+      // home: MyList()
       initialRoute: '/',
       routes: {
         '/': (context) => MyList(),

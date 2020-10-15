@@ -29,7 +29,8 @@ class MyList extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: list.list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _MyListItem('${list.list[index].title}');
+                  return _MyListItem(
+                      '${list.list[index].title}', list.list[index]);
                 },
               )),
       floatingActionButton: FloatingActionButton(
@@ -77,7 +78,7 @@ class MyList extends StatelessWidget {
             padding: EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
             child: TextField(
               maxLines: 1,
-              autofocus: false,
+              autofocus: true,
               controller: _controller,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -112,11 +113,16 @@ class MyList extends StatelessWidget {
 
 class _MyListItem extends StatelessWidget {
   final String title;
+  final Item item;
 
-  _MyListItem(this.title, {Key key}) : super(key: key);
+  _MyListItem(this.title, this.item, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var isComplete = context.select<ListModel, bool>(
+      (list) => list.list.contains(item),
+    );
+
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: LimitedBox(
@@ -131,7 +137,18 @@ class _MyListItem extends StatelessWidget {
                 child: Text(title),
               ),
               SizedBox(width: 24),
-              FlatButton(onPressed: null, child: Icon(Icons.check_box))
+              FlatButton(
+                onPressed: () {
+                  var itemObject = context.read<ListModel>();
+                  // need to implement way of affecting the item in the listmodel
+                  // currently we only have effectively a copy of the item, so changes
+                  // made to it do not actually change the item in the listmodel
+                  // and thus our icons do not register a change and so do not change
+                },
+                child: isComplete
+                    ? Icon(Icons.check_box_outline_blank)
+                    : Icon(Icons.check_box),
+              )
             ])));
   }
 }
