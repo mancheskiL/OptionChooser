@@ -29,7 +29,7 @@ class MyList extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: list.list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _MyListItem('${list.list[index].title}${index}');
+                  return _MyListItem('${list.list[index].title}');
                 },
               )),
       floatingActionButton: FloatingActionButton(
