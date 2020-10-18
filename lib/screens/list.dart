@@ -119,8 +119,12 @@ class _MyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // my understanding currently is the selector always returns false,
+    // until a change occurs, at which case it returns true
+    // selector does not actually return the value of the watched element
+    // merely the status of it that element has changed
     var isComplete = context.select<ListModel, bool>(
-      (list) => list.list.contains(item),
+      (list) => list.list[item.id].complete,
     );
 
     return Padding(
@@ -139,15 +143,15 @@ class _MyListItem extends StatelessWidget {
               SizedBox(width: 24),
               FlatButton(
                 onPressed: () {
-                  var itemObject = context.read<ListModel>();
-                  // need to implement way of affecting the item in the listmodel
-                  // currently we only have effectively a copy of the item, so changes
-                  // made to it do not actually change the item in the listmodel
-                  // and thus our icons do not register a change and so do not change
+                  var listObject = context.read<ListModel>();
+                  listObject.setFinished(item.id);
                 },
+                // child: isComplete
+                //     ? Icon(Icons.check_box_outline_blank)
+                //     : Icon(Icons.check_box),
                 child: isComplete
-                    ? Icon(Icons.check_box_outline_blank)
-                    : Icon(Icons.check_box),
+                    ? Icon(Icons.check_box)
+                    : Icon(Icons.check_box_outline_blank),
               )
             ])));
   }

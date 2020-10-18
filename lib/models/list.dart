@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 
 class ListModel extends ChangeNotifier {
   List<Item> list = [];
@@ -8,6 +7,17 @@ class ListModel extends ChangeNotifier {
     var newId = list.length;
     var newItem = new Item(title, newId);
     list.add(newItem);
+    notifyListeners();
+  }
+
+  void setFinished(int index) {
+    // TODO: use intl package to save a date time object into finishedDate
+    var workingItem = list[index];
+
+    workingItem.complete = true;
+    workingItem.finishedDate = DateTime.now();
+
+    // at this point, seems safe to say any change to this class, must call notifyListener
     notifyListeners();
   }
 }
@@ -22,10 +32,5 @@ class Item {
     this.title = title;
     this.id = id;
     this.complete = false;
-  }
-
-  void setFinished() {
-    // TODO: use intl package to save a date time object into finishedDate
-    complete = true;
   }
 }
