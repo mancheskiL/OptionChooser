@@ -4,11 +4,19 @@ import 'package:option_chooser/screens/list.dart';
 import 'package:option_chooser/screens/records.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
+import 'package:option_chooser/models/records.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ListModel(),
+    // ChangeNotifierProvider(
+    //   create: (context) => ListModel(),
+    //   child: MyApp(),
+    // ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ListModel()),
+        ChangeNotifierProvider(create: (context) => RecordsModel())
+      ],
       child: MyApp(),
     ),
   );

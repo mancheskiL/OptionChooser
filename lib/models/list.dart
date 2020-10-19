@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:option_chooser/models/records.dart';
 
 class ListModel extends ChangeNotifier {
   List<Item> list = [];
+  RecordsModel records = RecordsModel();
 
-  void add(String title) {
+  Item add(String title) {
     var newId = list.length;
     var newItem = new Item(title, newId);
     list.add(newItem);
@@ -16,6 +18,7 @@ class ListModel extends ChangeNotifier {
 
     workingItem.complete = true;
     workingItem.finishedDate = DateTime.now();
+    records.add(workingItem);
 
     // at this point, seems safe to say any change to this class, must call notifyListener
     notifyListeners();
