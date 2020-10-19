@@ -5,6 +5,6 @@ class RecordsModel extends ChangeNotifier {
 
   void add(item) {
     list.add(item);
-    notifyListeners();
+    // notifyListeners();
   }
 }
