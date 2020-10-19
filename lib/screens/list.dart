@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
-import 'package:option_chooser/models/records.dart';
 
 class MyList extends StatelessWidget {
   @override

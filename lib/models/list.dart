@@ -5,7 +5,7 @@ class ListModel extends ChangeNotifier {
   List<Item> list = [];
   RecordsModel records = RecordsModel();
 
-  Item add(String title) {
+  void add(String title) {
     var newId = list.length;
     var newItem = new Item(title, newId);
     list.add(newItem);
@@ -13,7 +13,6 @@ class ListModel extends ChangeNotifier {
   }
 
   void setFinished(int index) {
-    // TODO: use intl package to save a date time object into finishedDate
     var workingItem = list[index];
 
     workingItem.complete = true;
