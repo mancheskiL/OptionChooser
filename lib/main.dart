@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:option_chooser/screens/list.dart';
-// import 'package:option_chooser/screens/edit.dart';
 import 'package:option_chooser/screens/records.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MyList(),
-        // '/add-edit': (context) => MyEdit(),
         '/records': (context) => MyRecords(),
       },
     );

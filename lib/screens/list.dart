@@ -1,10 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class MyList extends StatelessWidget {
+  // trying to save date semi-permanently
+  _saveLaunchDate() async {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat('yyy-MM-dd');
+    String formatted = formatter.format(now);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var date = prefs.getString('date');
+    if (date == null) {
+      await prefs.setString('date', formatted);
+      print('No previous date, new date saved');
+    } else {
+      // need to only compare date, as is now, compareTo also compares time,
+      // which is too specific for our needs, and causes us to always reset
+      // list
+      DateTime beforeParsed = DateTime.parse(date);
+      print('Before ${beforeParsed}');
+      print('Now ${now}');
+      if (beforeParsed.compareTo(now) != 0) {
+        print('Current date different than saved, resetting list');
+        // reset list boxes
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _saveLaunchDate();
     return Scaffold(
       appBar: AppBar(
         title: Text('Options Screen'),
