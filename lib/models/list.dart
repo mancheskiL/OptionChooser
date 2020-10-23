@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:option_chooser/models/records.dart';
 
 class ListModel extends ChangeNotifier {
+  // TODO: save list to internal DB
   List<Item> list = [];
   RecordsModel records = RecordsModel();
 
