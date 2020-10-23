@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class MyList extends StatelessWidget {
   // trying to save date semi-permanently
-  _saveLaunchDate() async {
+  _saveLaunchDate(BuildContext context) async {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyy-MM-dd');
     String formatted = formatter.format(now);
@@ -17,22 +17,30 @@ class MyList extends StatelessWidget {
       await prefs.setString('date', formatted);
       print('No previous date, new date saved');
     } else {
-      // need to only compare date, as is now, compareTo also compares time,
-      // which is too specific for our needs, and causes us to always reset
-      // list
+      // just comparing date as int (i.e. 23 vs 24)
+      // this technically could fail if the app isn't reopened until a month later
+      // when the day date doesn't change, but it works for now
       DateTime beforeParsed = DateTime.parse(date);
-      print('Before ${beforeParsed}');
-      print('Now ${now}');
-      if (beforeParsed.compareTo(now) != 0) {
+      print('Before ${beforeParsed.day}');
+      print('Now ${now.day}');
+      if (beforeParsed.day != now.day) {
         print('Current date different than saved, resetting list');
         // reset list boxes
+        var listController = context.read<ListModel>();
+        listController.resetItems();
+
+        await prefs.setString('date', formatted);
       }
     }
   }
 
+  MyList(BuildContext context) {
+    _saveLaunchDate(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    _saveLaunchDate();
+    // _saveLaunchDate();
     return Scaffold(
       appBar: AppBar(
         title: Text('Options Screen'),

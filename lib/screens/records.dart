@@ -17,11 +17,6 @@ class MyRecords extends StatelessWidget {
                 title: Text('${list.records.list[index].title}'),
                 subtitle: Text(
                     'Completed on ${list.records.list[index].finishedDate}'),
-                // currently the records screen makes an entry whenever something is added to ListModel
-                // we only want things added when an item is 'completed'
-                // we can use a 'selector' to watch for this change,
-                // but then we need an index to watch each selector
-                // where do we get this index from???
               );
             }),
       ),

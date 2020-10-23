@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       // home: MyList()
       initialRoute: '/',
       routes: {
-        '/': (context) => MyList(),
+        '/': (context) => MyList(context),
         '/records': (context) => MyRecords(),
       },
     );

@@ -24,7 +24,7 @@ class ListModel extends ChangeNotifier {
   }
 
   void resetItems() {
-    // TODO: set all 'item's to complete=false and finishedDate=null
+    // set all 'item's to complete=false and finishedDate=null
     // every day (i.e. when midnight passes)
     // super duper no idea how to do this yet
 
@@ -35,6 +35,11 @@ class ListModel extends ChangeNotifier {
     // actually i don't think this will be a problem, reseting list items will not
     // change records list, so even though that route technically rebuilds
     // there shouldn't be visible (or logical for that matter) changes
+    for (var item in list) {
+      item.complete = false;
+      item.finishedDate = null;
+    }
+    notifyListeners();
   }
 }
 
