@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:option_chooser/models/records.dart';
 import 'package:option_chooser/models/list.dart';
 
 class MyRecords extends StatelessWidget {

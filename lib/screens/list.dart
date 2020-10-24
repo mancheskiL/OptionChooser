@@ -36,6 +36,10 @@ class MyList extends StatelessWidget {
 
   MyList(BuildContext context) {
     _saveLaunchDate(context);
+    // can probably pass our controller to _saveLaunchDate
+    // instead of using memory to 'read' ListModel twice
+    var lController = context.read<ListModel>();
+    lController.loadDB();
   }
 
   @override

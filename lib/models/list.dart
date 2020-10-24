@@ -42,6 +42,11 @@ class ListModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void loadDB() {
+    // query DB for saved options
+    // context.read a model we will make a provide
+  }
 }
 
 class Item {
