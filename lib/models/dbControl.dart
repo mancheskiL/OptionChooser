@@ -42,5 +42,7 @@ class DbControl {
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    print('save called');
   }
 }

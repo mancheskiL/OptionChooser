@@ -11,17 +11,9 @@ class Item {
   }
 
   Map<String, dynamic> toMap() {
-    var temp;
-    if (complete) {
-      temp = 1;
-    } else {
-      temp = 0;
-    }
-
     return {
       'id': id,
       'title': title,
-      'complete': temp,
     };
   }
 }

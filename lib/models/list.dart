@@ -12,6 +12,9 @@ class ListModel extends ChangeNotifier {
     var newId = list.length;
     var newItem = new Item(title, newId);
     list.add(newItem);
+
+    DbControl.db.saveToDB(newItem);
+
     notifyListeners();
   }
 
@@ -48,9 +51,11 @@ class ListModel extends ChangeNotifier {
     for (var map in results) {
       list.add(Item(map['title'], map['it']));
     }
-  }
-
-  void saveToDB() async {
-    // pass
+    notifyListeners();
+    // ideally this is called once as startup, then we will handle
+    // UI based changes within this class
+    // ATM, simpler than doing huge DB class changes since I already
+    // have this system built out
+    // (although, DB extended as changenotifier probably better overall)
   }
 }

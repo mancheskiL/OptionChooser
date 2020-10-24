@@ -38,7 +38,6 @@ class MyList extends StatelessWidget {
 
   MyList(BuildContext context) {
     _saveLaunchDate(context);
-    ListModel().loadDB();
   }
 
   @override
@@ -48,6 +47,13 @@ class MyList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Options Screen'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.access_alarm),
+            onPressed: () {
+              var testList = context.read<ListModel>();
+              testList.loadDB();
+            },
+          ),
           IconButton(
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
@@ -67,7 +73,7 @@ class MyList extends StatelessWidget {
                 itemCount: list.list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return _MyListItem(
-                      '${list.list[index].title}', list.list[index]);
+                      list.list[index].title, list.list[index].id);
                 },
               )),
       floatingActionButton: FloatingActionButton(
@@ -150,9 +156,9 @@ class MyList extends StatelessWidget {
 
 class _MyListItem extends StatelessWidget {
   final String title;
-  final Item item;
+  final int id;
 
-  _MyListItem(this.title, this.item, {Key key}) : super(key: key);
+  _MyListItem(this.title, this.id, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +166,9 @@ class _MyListItem extends StatelessWidget {
     // until a change occurs, at which case it returns true
     // selector does not actually return the value of the watched element
     // merely the status of it that element has changed
-    var isComplete = context.select<ListModel, bool>(
-      (list) => list.list[item.id].complete,
-    );
+    // var isComplete = context.select<ListModel, bool>(
+    //   (list) => list.list[id].complete,
+    // );
 
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -178,18 +184,15 @@ class _MyListItem extends StatelessWidget {
                 child: Text(title),
               ),
               SizedBox(width: 24),
-              FlatButton(
-                onPressed: () {
-                  var listObject = context.read<ListModel>();
-                  listObject.setFinished(item.id);
-                },
-                // child: isComplete
-                //     ? Icon(Icons.check_box_outline_blank)
-                //     : Icon(Icons.check_box),
-                child: isComplete
-                    ? Icon(Icons.check_box)
-                    : Icon(Icons.check_box_outline_blank),
-              )
+              // FlatButton(
+              //   onPressed: () {
+              //     var listObject = context.read<ListModel>();
+              //     listObject.setFinished(item.id);
+              //   },
+              //   child: isComplete
+              //       ? Icon(Icons.check_box)
+              //       : Icon(Icons.check_box_outline_blank),
+              // )
             ])));
   }
 }
