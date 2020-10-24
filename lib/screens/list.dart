@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:option_chooser/models/dbControl.dart';
+import 'package:option_chooser/models/item.dart';
 
 class MyList extends StatelessWidget {
   // trying to save date semi-permanently
@@ -34,15 +36,9 @@ class MyList extends StatelessWidget {
     }
   }
 
-  _initializeDBLoad(BuildContext context) {
-    // var lController = context.read<ListModel>();
-    var lController = Provider.of<ListModel>(context, listen: false);
-    lController.loadDB();
-  }
-
   MyList(BuildContext context) {
     _saveLaunchDate(context);
-    _initializeDBLoad(context);
+    ListModel().loadDB();
   }
 
   @override
@@ -56,8 +52,6 @@ class MyList extends StatelessWidget {
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
             onPressed: () {
-              // var listAdd = context.read<ListModel>();
-              // listAdd.add('test');
               return _displayDialog(context);
             },
           ),

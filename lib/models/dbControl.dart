@@ -1,23 +1,31 @@
-import 'package:async/async.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:option_chooser/models/item.dart';
 
 class DbControl {
-  Future<Database> database;
+  DbControl._();
+  static final DbControl db = DbControl._();
 
-  DbControl() {
-    main();
+  static Database _database;
+
+  Future<Database> get database async {
+    if (_database != null) {
+      print('DB action performed');
+      return _database;
+    }
+
+    print('creating database');
+    _database = await initDB();
+    return _database;
   }
 
-  void main() async {
-    database = openDatabase(
-      join(await getDatabasesPath(), 'options_app.db'),
-      onCreate: (db, version) {
-        return db.execute(
-            "CREATE TABLE options(id INTEGER PRIMARY KEY, title TEXT, complete INTEGER)");
-      },
-      version: 1,
-    );
+  initDB() async {
+    String path = join(await getDatabasesPath(), 'options_app.db');
+    return await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+      await db
+          .execute("CREATE TABLE options(id INTEGER PRIMARY KEY, title TEXT)");
+    });
   }
 
   Future<List<Map<String, dynamic>>> retrieve() async {
@@ -26,12 +34,12 @@ class DbControl {
     return await db.query('options');
   }
 
-  Future<void> saveToDB(var entry) async {
+  Future<void> saveToDB(Item item) async {
     final Database db = await database;
 
     await db.insert(
       'options',
-      entry.toMap(),
+      item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
