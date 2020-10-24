@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:option_chooser/models/records.dart';
+import 'package:option_chooser/models/dbControl.dart';
+import 'package:provider/provider.dart';
 
 class ListModel extends ChangeNotifier {
   // TODO: save list to internal DB
   List<Item> list = [];
   RecordsModel records = RecordsModel();
+  var context;
+
+  ListModel(BuildContext context) {
+    this.context = context;
+  }
 
   void add(String title) {
     var newId = list.length;
@@ -43,9 +50,16 @@ class ListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loadDB() {
+  void loadDB() async {
     // query DB for saved options
     // context.read a model we will make a provide
+    // var db = context.read<DbControl>();
+    var db = Provider.of<DbControl>(context, listen: false);
+    List<Map<String, dynamic>> results = await db.retrieve();
+    print(results);
+    for (var map in results) {
+      list.add(Item.db(map['title'], map['it'], map['complete']));
+    }
   }
 }
 
@@ -59,5 +73,30 @@ class Item {
     this.title = title;
     this.id = id;
     this.complete = false;
+  }
+
+  Item.db(String title, int id, int complete) {
+    this.title = title;
+    this.id = id;
+    if (complete == 0) {
+      this.complete = false;
+    } else {
+      this.complete = true;
+    }
+  }
+
+  Map<String, dynamic> toMap() {
+    var temp;
+    if (complete) {
+      temp = 1;
+    } else {
+      temp = 0;
+    }
+
+    return {
+      'id': id,
+      'title': title,
+      'complete': temp,
+    };
   }
 }
