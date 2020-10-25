@@ -4,6 +4,7 @@ import 'package:option_chooser/screens/records.dart';
 import 'package:provider/provider.dart';
 import 'package:option_chooser/models/list.dart';
 import 'package:option_chooser/models/records.dart';
+import 'package:option_chooser/models/dbControl.dart';
 
 void main() {
   runApp(
@@ -13,7 +14,7 @@ void main() {
     // ),
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ListModel()),
+        ChangeNotifierProvider(create: (context) => DbControl()),
         ChangeNotifierProvider(create: (context) => RecordsModel()),
       ],
       child: MyApp(),

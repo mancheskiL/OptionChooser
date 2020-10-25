@@ -1,10 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:option_chooser/models/item.dart';
 
-class DbControl {
-  DbControl._();
-  static final DbControl db = DbControl._();
+class DbControl extends ChangeNotifier {
+  // comment out because I don't need a Singleton right now I think
+  // DbControl._();
+  // static final DbControl db = DbControl._();
 
   static Database _database;
 
@@ -42,7 +44,9 @@ class DbControl {
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
-    print('save called');
   }
+
+  Future<void> update() async {}
+
+  Future<void> delete() async {}
 }
