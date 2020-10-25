@@ -16,7 +16,7 @@ class DbControl extends ChangeNotifier {
       return _database;
     }
 
-    print('creating database');
+    print('initializing database');
     _database = await initDB();
     return _database;
   }
@@ -30,20 +30,35 @@ class DbControl extends ChangeNotifier {
     });
   }
 
-  Future<List<Map<String, dynamic>>> retrieve() async {
+  Future<List<Item>> retrieve() async {
     final Database db = await database;
 
-    return await db.query('options');
+    var results = await db.query('options');
+    List<Item> tempList = [];
+    for (var result in results) {
+      tempList.add(Item.fromMap(result));
+    }
+    return tempList;
   }
 
-  Future<void> saveToDB(Item item) async {
+  Future<void> saveToDB(String title) async {
     final Database db = await database;
+
+    var temp = await retrieve();
+    var id = temp.length;
+
+    var item = Item(
+      title,
+      id,
+    );
 
     await db.insert(
       'options',
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    notifyListeners();
   }
 
   Future<void> update() async {}

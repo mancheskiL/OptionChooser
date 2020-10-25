@@ -13,7 +13,7 @@ class ListModel extends ChangeNotifier {
     var newItem = new Item(title, newId);
     list.add(newItem);
 
-    DbControl.db.saveToDB(newItem);
+    // DbControl.db.saveToDB(newItem);
 
     notifyListeners();
   }
@@ -46,12 +46,12 @@ class ListModel extends ChangeNotifier {
   void loadDB() async {
     // query DB for saved options
     // context.read a model we will make a provide
-    List<Map<String, dynamic>> results = await DbControl.db.retrieve();
-    print(results);
-    for (var map in results) {
-      list.add(Item(map['title'], map['it']));
-    }
-    notifyListeners();
+    // List<Map<String, dynamic>> results = await DbControl.db.retrieve();
+    // print(results);
+    // for (var map in results) {
+    //   list.add(Item(map['title'], map['it']));
+    // }
+    // notifyListeners();
     // ideally this is called once as startup, then we will handle
     // UI based changes within this class
     // ATM, simpler than doing huge DB class changes since I already

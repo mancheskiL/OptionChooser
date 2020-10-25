@@ -10,6 +10,12 @@ class Item {
     this.complete = false;
   }
 
+  Item.fromMap(Map<String, dynamic> map) {
+    this.title = map['title'];
+    this.id = map['id'];
+    this.complete = false;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

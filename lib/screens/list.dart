@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:option_chooser/models/list.dart';
+// import 'package:option_chooser/models/list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:option_chooser/models/dbControl.dart';
@@ -28,17 +28,17 @@ class MyList extends StatelessWidget {
       if (beforeParsed.day != now.day) {
         print('Current date different than saved, resetting list');
         // reset list boxes
-        var listController = context.read<ListModel>();
-        listController.resetItems();
+        // var listController = context.read<ListModel>();
+        // listController.resetItems();
 
         await prefs.setString('date', formatted);
       }
     }
   }
 
-  MyList(BuildContext context) {
-    _saveLaunchDate(context);
-  }
+  // MyList(BuildContext context) {
+  //   _saveLaunchDate(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +47,13 @@ class MyList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Options Screen'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.access_alarm),
-            onPressed: () {
-              var testList = context.read<ListModel>();
-              testList.loadDB();
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.access_alarm),
+          //   onPressed: () {
+          //     var testList = context.read<ListModel>();
+          //     testList.loadDB();
+          //   },
+          // ),
           IconButton(
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
@@ -67,15 +67,37 @@ class MyList extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<ListModel>(
-          builder: (context, list, child) => ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: list.list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _MyListItem(
-                      list.list[index].title, list.list[index].id);
-                },
-              )),
+      body: // Consumer<ListModel>(
+          //     builder: (context, list, child) => ListView.builder(
+          //           padding: const EdgeInsets.all(8),
+          //           itemCount: list.list.length,
+          //           itemBuilder: (BuildContext context, int index) {
+          //             return _MyListItem(
+          //                 list.list[index].title, list.list[index].id);
+          //           },
+          //         )),
+          FutureBuilder<List<Item>>(
+              //context.read<DbControl>().retrieve(),
+              future: Provider.of<DbControl>(context, listen: true).retrieve(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _MyListItem(
+                        snapshot.data[index].title,
+                        snapshot.data[index].id,
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return Text('Oops!');
+                }
+                return Center(child: CircularProgressIndicator());
+              }),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Random selection',
@@ -140,8 +162,8 @@ class MyList extends StatelessWidget {
               ),
               FlatButton(
                 onPressed: () {
-                  var listAdd = context.read<ListModel>();
-                  listAdd.add('${_controller.value.text}');
+                  var db = context.read<DbControl>();
+                  db.saveToDB('${_controller.value.text}');
                   Navigator.pop(context);
                 },
                 child: Center(child: Text('Submit')),
