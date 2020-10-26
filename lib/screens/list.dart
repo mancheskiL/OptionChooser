@@ -47,13 +47,13 @@ class MyList extends StatelessWidget {
       appBar: AppBar(
         title: Text('Options Screen'),
         actions: [
-          // IconButton(
-          //   icon: Icon(Icons.access_alarm),
-          //   onPressed: () {
-          //     var testList = context.read<ListModel>();
-          //     testList.loadDB();
-          //   },
-          // ),
+          IconButton(
+            icon: Icon(Icons.access_alarm),
+            onPressed: () {
+              var clear = context.read<DbControl>();
+              clear.clearAll();
+            },
+          ),
           IconButton(
             // when pressed will add new entry
             icon: Icon(Icons.add_circle),
@@ -67,37 +67,27 @@ class MyList extends StatelessWidget {
           ),
         ],
       ),
-      body: // Consumer<ListModel>(
-          //     builder: (context, list, child) => ListView.builder(
-          //           padding: const EdgeInsets.all(8),
-          //           itemCount: list.list.length,
-          //           itemBuilder: (BuildContext context, int index) {
-          //             return _MyListItem(
-          //                 list.list[index].title, list.list[index].id);
-          //           },
-          //         )),
-          FutureBuilder<List<Item>>(
-              //context.read<DbControl>().retrieve(),
-              future: Provider.of<DbControl>(context, listen: true).retrieve(),
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _MyListItem(
-                        snapshot.data[index].title,
-                        snapshot.data[index].id,
-                      );
-                    },
+      body: FutureBuilder<List<Item>>(
+          //context.read<DbControl>().retrieve(),
+          future: Provider.of<DbControl>(context, listen: true).retrieve(),
+          builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _MyListItem(
+                    snapshot.data[index].title,
+                    snapshot.data[index].id,
                   );
-                } else if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Text('Oops!');
-                }
-                return Center(child: CircularProgressIndicator());
-              }),
+                },
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Text('Oops!');
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Random selection',
@@ -206,15 +196,15 @@ class _MyListItem extends StatelessWidget {
                 child: Text(title),
               ),
               SizedBox(width: 24),
-              // FlatButton(
-              //   onPressed: () {
-              //     var listObject = context.read<ListModel>();
-              //     listObject.setFinished(item.id);
-              //   },
-              //   child: isComplete
-              //       ? Icon(Icons.check_box)
-              //       : Icon(Icons.check_box_outline_blank),
-              // )
+              FlatButton(
+                  onPressed: null, //() {
+                  //     var listObject = context.read<ListModel>();
+                  //     listObject.setFinished(item.id);
+                  //   },
+                  child: Icon(Icons.check_box) //isComplete
+                  //       ? Icon(Icons.check_box)
+                  //       : Icon(Icons.check_box_outline_blank),
+                  )
             ])));
   }
 }

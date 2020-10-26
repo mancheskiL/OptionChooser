@@ -12,7 +12,6 @@ class DbControl extends ChangeNotifier {
 
   Future<Database> get database async {
     if (_database != null) {
-      print('DB action performed');
       return _database;
     }
 
@@ -31,6 +30,7 @@ class DbControl extends ChangeNotifier {
   }
 
   Future<List<Item>> retrieve() async {
+    print('query action');
     final Database db = await database;
 
     var results = await db.query('options');
@@ -42,6 +42,7 @@ class DbControl extends ChangeNotifier {
   }
 
   Future<void> saveToDB(String title) async {
+    print('save action');
     final Database db = await database;
 
     var temp = await retrieve();
@@ -61,7 +62,20 @@ class DbControl extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> update() async {}
+  Future<void> update() async {
+    print('update action');
+  }
 
-  Future<void> delete() async {}
+  Future<void> delete() async {
+    print('delete action');
+  }
+
+  Future<void> clearAll() async {
+    print('clear all action');
+    final Database db = await database;
+
+    await db.delete('options');
+
+    notifyListeners();
+  }
 }
