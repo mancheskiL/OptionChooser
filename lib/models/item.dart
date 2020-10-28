@@ -22,4 +22,12 @@ class Item {
       'title': title,
     };
   }
+
+  Map<String, dynamic> toMapRecords() {
+    return {
+      'id': id,
+      'title': title,
+      'date': finishedDate,
+    };
+  }
 }

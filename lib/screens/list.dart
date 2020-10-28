@@ -68,7 +68,6 @@ class MyList extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<List<Item>>(
-          //context.read<DbControl>().retrieve(),
           future: Provider.of<DbControl>(context, listen: true).retrieve(),
           builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
             if (snapshot.hasData) {
@@ -90,10 +89,7 @@ class MyList extends StatelessWidget {
                               '${snapshot.data[index].title} was dismissed')));
                     },
                     background: Container(color: Colors.red),
-                    child: _MyListItem(
-                      snapshot.data[index].title,
-                      snapshot.data[index].id,
-                    ),
+                    child: _MyListItem(snapshot.data[index]),
                   );
                 },
               );
@@ -181,11 +177,19 @@ class MyList extends StatelessWidget {
   }
 }
 
-class _MyListItem extends StatelessWidget {
-  final String title;
-  final int id;
+class _MyListItem extends StatefulWidget {
+  final Item item;
+  // final bool complete;
 
-  _MyListItem(this.title, this.id, {Key key}) : super(key: key);
+  // _MyListItem({Key key, this.title, this.id, this.complete}) : super(key: key);
+  _MyListItem(this.item, {Key key}) : super(key: key);
+
+  @override
+  _MyListItemState createState() => _MyListItemState();
+}
+
+class _MyListItemState extends State<_MyListItem> {
+  bool complete = false;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +200,6 @@ class _MyListItem extends StatelessWidget {
     // var isComplete = context.select<ListModel, bool>(
     //   (list) => list.list[id].complete,
     // );
-
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: LimitedBox(
@@ -208,18 +211,22 @@ class _MyListItem extends StatelessWidget {
               ),
               SizedBox(width: 24),
               Expanded(
-                child: Text(title),
+                child: Text(widget.item.title),
               ),
               SizedBox(width: 24),
               FlatButton(
-                  onPressed: null, //() {
-                  //     var listObject = context.read<ListModel>();
-                  //     listObject.setFinished(item.id);
-                  //   },
-                  child: Icon(Icons.check_box) //isComplete
-                  //       ? Icon(Icons.check_box)
-                  //       : Icon(Icons.check_box_outline_blank),
-                  )
+                onPressed: () {
+                  var dbAccess = context.read<DbControl>();
+                  dbAccess.addToRecords(widget.item);
+                  setState(() {
+                    complete = !complete;
+                  });
+                },
+                // Icon(Icons.check_box)
+                child: complete
+                    ? Icon(Icons.check_box)
+                    : Icon(Icons.check_box_outline_blank),
+              )
             ])));
   }
 }

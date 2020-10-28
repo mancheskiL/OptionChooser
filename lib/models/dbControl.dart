@@ -26,6 +26,8 @@ class DbControl extends ChangeNotifier {
         onCreate: (Database db, int version) async {
       await db
           .execute("CREATE TABLE options(id INTEGER PRIMARY KEY, title TEXT)");
+      await db.execute(
+          "CREATE TABLE records(id INTEGER PRIMARY KEY, title TEXT, date TEXT");
     });
   }
 
@@ -56,6 +58,24 @@ class DbControl extends ChangeNotifier {
     await db.insert(
       'options',
       item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    notifyListeners();
+  }
+
+  Future<void> addToRecords(Item item) async {
+    // this needs to write to a 'records' table
+    Item holder = item;
+    holder.complete = true;
+    holder.finishedDate = DateTime.now();
+
+    print('saving to records table');
+    final Database db = await database;
+
+    await db.insert(
+      'records',
+      holder.toMapRecords(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
