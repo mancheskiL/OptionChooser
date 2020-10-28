@@ -27,7 +27,7 @@ class DbControl extends ChangeNotifier {
       await db
           .execute("CREATE TABLE options(id INTEGER PRIMARY KEY, title TEXT)");
       await db.execute(
-          "CREATE TABLE records(id INTEGER PRIMARY KEY, title TEXT, date TEXT");
+          "CREATE TABLE records(id INTEGER PRIMARY KEY, title TEXT, date TEXT)");
     });
   }
 
@@ -68,7 +68,7 @@ class DbControl extends ChangeNotifier {
     // this needs to write to a 'records' table
     Item holder = item;
     holder.complete = true;
-    holder.finishedDate = DateTime.now();
+    holder.finishedDate = DateTime.now().toString();
 
     print('saving to records table');
     final Database db = await database;
