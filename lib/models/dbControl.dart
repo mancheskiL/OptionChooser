@@ -66,8 +66,15 @@ class DbControl extends ChangeNotifier {
     print('update action');
   }
 
-  Future<void> delete() async {
+  Future<void> delete(int id) async {
     print('delete action');
+    final Database db = await database;
+
+    await db.delete(
+      'options',
+      where: "id = ?",
+      whereArgs: [id],
+    );
   }
 
   Future<void> clearAll() async {

@@ -76,9 +76,24 @@ class MyList extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _MyListItem(
-                    snapshot.data[index].title,
-                    snapshot.data[index].id,
+                  // return _MyListItem(
+                  //   snapshot.data[index].title,
+                  //   snapshot.data[index].id,
+                  // );
+                  return Dismissible(
+                    key: Key(snapshot.data[index].id.toString()),
+                    onDismissed: (direction) {
+                      var dbAcces = context.read<DbControl>();
+                      dbAcces.delete(snapshot.data[index].id);
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              '${snapshot.data[index].title} was dismissed')));
+                    },
+                    background: Container(color: Colors.red),
+                    child: _MyListItem(
+                      snapshot.data[index].title,
+                      snapshot.data[index].id,
+                    ),
                   );
                 },
               );
