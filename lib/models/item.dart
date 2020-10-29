@@ -20,7 +20,7 @@ class Item {
     this.title = map['title'];
     this.id = map['id'];
     this.complete = true;
-    this.finishedDate = map['data'];
+    this.finishedDate = map['date'];
   }
 
   Map<String, dynamic> toMap() {
