@@ -16,6 +16,13 @@ class Item {
     this.complete = false;
   }
 
+  Item.fromMapRecords(Map<String, dynamic> map) {
+    this.title = map['title'];
+    this.id = map['id'];
+    this.complete = true;
+    this.finishedDate = map['data'];
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:option_chooser/screens/list.dart';
 import 'package:option_chooser/screens/records.dart';
 import 'package:provider/provider.dart';
-// import 'package:option_chooser/models/list.dart';
-// import 'package:option_chooser/models/records.dart';
 import 'package:option_chooser/models/dbControl.dart';
 
 void main() {

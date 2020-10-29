@@ -64,6 +64,20 @@ class DbControl extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Item>> retrieveRecords() async {
+    print('getting records');
+    final Database db = await database;
+
+    var results = await db.query('records');
+    List<Item> tempList = [];
+    for (var result in results) {
+      // Item temp = Item.fromMapRecords(result);
+      // print(temp.finishedDate);
+      tempList.add(Item.fromMapRecords(result));
+    }
+    return tempList;
+  }
+
   Future<void> addToRecords(Item item) async {
     // this needs to write to a 'records' table
     Item holder = item;
