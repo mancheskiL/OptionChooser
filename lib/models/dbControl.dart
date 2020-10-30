@@ -84,6 +84,10 @@ class DbControl extends ChangeNotifier {
     holder.complete = true;
     holder.finishedDate = DateTime.now().toString();
 
+    List<Item> findId = await retrieveRecords();
+    int newId = findId.length;
+    holder.id = newId;
+
     print('saving to records table');
     final Database db = await database;
 
@@ -92,8 +96,6 @@ class DbControl extends ChangeNotifier {
       holder.toMapRecords(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
-    notifyListeners();
   }
 
   Future<void> update() async {
