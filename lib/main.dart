@@ -6,10 +6,6 @@ import 'package:option_chooser/models/dbControl.dart';
 
 void main() {
   runApp(
-    // ChangeNotifierProvider(
-    //   create: (context) => ListModel(),
-    //   child: MyApp(),
-    // ),
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DbControl()),
@@ -24,7 +20,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Option Chooser',
-      // home: MyList()
       initialRoute: '/',
       routes: {
         '/': (context) => MyList(),

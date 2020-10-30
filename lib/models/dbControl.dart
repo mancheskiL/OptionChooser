@@ -4,10 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:option_chooser/models/item.dart';
 
 class DbControl extends ChangeNotifier {
-  // comment out because I don't need a Singleton right now I think
-  // DbControl._();
-  // static final DbControl db = DbControl._();
-
   static Database _database;
 
   Future<Database> get database async {
@@ -71,8 +67,6 @@ class DbControl extends ChangeNotifier {
     var results = await db.query('records');
     List<Item> tempList = [];
     for (var result in results) {
-      // Item temp = Item.fromMapRecords(result);
-      // print(temp.finishedDate);
       tempList.add(Item.fromMapRecords(result));
     }
     return tempList;
@@ -118,6 +112,7 @@ class DbControl extends ChangeNotifier {
     final Database db = await database;
 
     await db.delete('options');
+    await db.delete('records');
 
     notifyListeners();
   }

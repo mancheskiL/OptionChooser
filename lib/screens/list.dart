@@ -1,48 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:option_chooser/models/list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
 import 'package:option_chooser/models/dbControl.dart';
 import 'package:option_chooser/models/item.dart';
+import 'dart:math';
 
-class MyList extends StatelessWidget {
-  // trying to save date semi-permanently
-  _saveLaunchDate(BuildContext context) async {
-    DateTime now = DateTime.now();
-    DateFormat formatter = DateFormat('yyy-MM-dd');
-    String formatted = formatter.format(now);
+class MyList extends StatefulWidget {
+  @override
+  MyListState createState() => MyListState();
+}
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var date = prefs.getString('date');
-    if (date == null) {
-      await prefs.setString('date', formatted);
-      print('No previous date, new date saved');
-    } else {
-      // just comparing date as int (i.e. 23 vs 24)
-      // this technically could fail if the app isn't reopened until a month later
-      // when the day date doesn't change, but it works for now
-      DateTime beforeParsed = DateTime.parse(date);
-      print('Before ${beforeParsed.day}');
-      print('Now ${now.day}');
-      if (beforeParsed.day != now.day) {
-        print('Current date different than saved, resetting list');
-        // reset list boxes
-        // var listController = context.read<ListModel>();
-        // listController.resetItems();
-
-        await prefs.setString('date', formatted);
-      }
-    }
-  }
-
-  // MyList(BuildContext context) {
-  //   _saveLaunchDate(context);
-  // }
+class MyListState extends State<MyList> {
+  int highlightIndex;
 
   @override
   Widget build(BuildContext context) {
-    // _saveLaunchDate();
     return Scaffold(
       appBar: AppBar(
         title: Text('Options Screen'),
@@ -75,22 +46,36 @@ class MyList extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  // return _MyListItem(
-                  //   snapshot.data[index].title,
-                  //   snapshot.data[index].id,
-                  // );
-                  return Dismissible(
-                    key: Key(snapshot.data[index].id.toString()),
-                    onDismissed: (direction) {
-                      var dbAcces = context.read<DbControl>();
-                      dbAcces.delete(snapshot.data[index].id);
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              '${snapshot.data[index].title} was dismissed')));
-                    },
-                    background: Container(color: Colors.red),
-                    child: _MyListItem(snapshot.data[index]),
-                  );
+                  if (highlightIndex != index) {
+                    return Dismissible(
+                      key: Key(snapshot.data[index].id.toString()),
+                      onDismissed: (direction) {
+                        var dbAcces = context.read<DbControl>();
+                        dbAcces.delete(snapshot.data[index].id);
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                '${snapshot.data[index].title} was dismissed')));
+                      },
+                      background: Container(color: Colors.red),
+                      child: _MyListItem(snapshot.data[index]),
+                    );
+                  } else {
+                    return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 2),
+                        color: Colors.green,
+                        child: Dismissible(
+                          key: Key(snapshot.data[index].id.toString()),
+                          onDismissed: (direction) {
+                            var dbAcces = context.read<DbControl>();
+                            dbAcces.delete(snapshot.data[index].id);
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    '${snapshot.data[index].title} was dismissed')));
+                          },
+                          background: Container(color: Colors.red),
+                          child: _MyListItem(snapshot.data[index]),
+                        ));
+                  }
                 },
               );
             } else if (snapshot.hasError) {
@@ -100,7 +85,15 @@ class MyList extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () async {
+          var dbAccess = context.read<DbControl>();
+          List<Item> list = await dbAccess.retrieve();
+          int count = list.length;
+          setState(() {
+            int selection = Random().nextInt(count);
+            highlightIndex = selection;
+          });
+        },
         tooltip: 'Random selection',
         child: Icon(Icons.add),
       ),
@@ -179,9 +172,7 @@ class MyList extends StatelessWidget {
 
 class _MyListItem extends StatefulWidget {
   final Item item;
-  // final bool complete;
 
-  // _MyListItem({Key key, this.title, this.id, this.complete}) : super(key: key);
   _MyListItem(this.item, {Key key}) : super(key: key);
 
   @override
