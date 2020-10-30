@@ -213,7 +213,6 @@ class _MyListItemState extends State<_MyListItem> {
                     complete = !complete;
                   });
                 },
-                // Icon(Icons.check_box)
                 child: complete
                     ? Icon(Icons.check_box)
                     : Icon(Icons.check_box_outline_blank),
